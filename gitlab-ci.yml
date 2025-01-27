@@ -1,0 +1,25 @@
+stages:
+  - test
+  - deploy
+
+variables:
+  PYTHON_VERSION: "3.8"
+
+before_script:
+  - python -m pip install --upgrade pip
+  - pip install -r requirements.txt
+
+test:
+  stage: test
+  script:
+    - pytest
+  only:
+    - master  # فقط برای برنچ master اجرا می‌شود
+
+deploy:
+  stage: deploy
+  script:
+    - git remote add heroku https://git.heroku.com/<your-heroku-app-name>.git
+    - git push heroku master
+  only:
+    - master  # فقط برای برنچ master اجرا می‌شود
